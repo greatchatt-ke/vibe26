@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>오늘의 할일</title>
+  <script>
+    // 첫 화면 깜빡임을 막기 위해 저장된 테마를 먼저 적용
+    try {
+      var saved = JSON.parse(localStorage.getItem('todolist:v1'));
+      var theme = saved && saved.settings && saved.settings.theme;
+      if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <main class="app">
+    <div id="storage-warning" class="banner banner-warn" role="alert" hidden></div>
+
+    <header class="header">
+      <button id="prev-day" class="icon-btn" type="button" aria-label="이전 날짜">◀</button>
+      <div class="date">
+        <h1 id="date-title"></h1>
+        <span id="today-chip" class="chip">오늘</span>
+        <button id="today-btn" class="link-btn" type="button" hidden>오늘로 이동</button>
+      </div>
+      <button id="next-day" class="icon-btn" type="button" aria-label="다음 날짜">▶</button>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" type="button" aria-label="다크 모드로 전환">☾</button>
+        <button id="menu-btn" class="icon-btn" type="button" aria-label="메뉴 열기">⋯</button>
+      </div>
+    </header>
+
+    <div id="carry-banner" class="banner banner-carry" hidden>
+      <span id="carry-text"></span>
+      <div class="banner-actions">
+        <button id="carry-accept" class="btn btn-primary" type="button">가져오기</button>
+        <button id="carry-dismiss" class="btn" type="button">무시</button>
+      </div>
+    </div>
+
+    <section class="progress" aria-label="진행률">
+      <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="완료 비율">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+      <p id="progress-text" class="progress-text" aria-live="polite"></p>
+    </section>
+
+    <form id="add-form" class="add-form" autocomplete="off">
+      <input id="add-input" type="text" maxlength="200" placeholder="오늘 할 일을 입력하세요..." aria-label="새 할 일">
+      <button class="btn btn-primary" type="submit">추가</button>
+    </form>
+    <p id="past-note" class="past-note" hidden>지난 날짜는 완료 체크만 할 수 있어요.</p>
+
+    <div class="filters" role="tablist" aria-label="필터">
+      <button type="button" role="tab" data-filter="all">전체</button>
+      <button type="button" role="tab" data-filter="active">진행 중</button>
+      <button type="button" role="tab" data-filter="done">완료</button>
+    </div>
+
+    <ul id="todo-list" class="todo-list" aria-label="할 일 목록"></ul>
+    <p id="empty-state" class="empty" hidden></p>
+
+    <footer id="footer" class="footer" hidden>
+      <span id="remaining"></span>
+      <button id="clear-done" class="btn btn-text" type="button">완료 항목 지우기</button>
+    </footer>
+  </main>
+
+  <div id="toast" class="toast" role="status" hidden>
+    <span id="toast-text"></span>
+    <button id="toast-action" class="btn btn-text" type="button"></button>
+  </div>
+
+  <dialog id="menu-dialog" class="dialog" aria-labelledby="menu-title">
+    <h2 id="menu-title">메뉴</h2>
+    <div class="menu-list">
+      <button type="button" class="menu-item" data-menu="export-md">이 날 목록을 Markdown으로 복사</button>
+      <button type="button" class="menu-item" data-menu="backup-save">백업 파일 저장 (JSON)</button>
+      <button type="button" class="menu-item" data-menu="backup-load">백업 파일 불러오기</button>
+      <button type="button" class="menu-item danger" data-menu="cleanup">90일 이전 기록 삭제</button>
+      <button type="button" class="menu-item" data-menu="shortcuts">단축키 안내</button>
+    </div>
+    <form method="dialog" class="dialog-actions">
+      <button class="btn" type="submit">닫기</button>
+    </form>
+    <input id="backup-file" type="file" accept="application/json,.json" hidden>
+  </dialog>
+
+  <dialog id="shortcuts-dialog" class="dialog" aria-labelledby="shortcuts-title">
+    <h2 id="shortcuts-title">단축키</h2>
+    <dl class="shortcuts">
+      <dt><kbd>/</kbd> 또는 <kbd>N</kbd></dt><dd>입력창으로 이동</dd>
+      <dt><kbd>Enter</kbd></dt><dd>추가 · 수정 저장</dd>
+      <dt><kbd>Esc</kbd></dt><dd>수정 취소</dd>
+      <dt><kbd>Alt</kbd> + <kbd>↑</kbd>/<kbd>↓</kbd></dt><dd>항목 순서 변경</dd>
+      <dt><kbd>?</kbd></dt><dd>단축키 안내</dd>
+    </dl>
+    <form method="dialog" class="dialog-actions">
+      <button class="btn" type="submit">닫기</button>
+    </form>
+  </dialog>
+</body>
+</html>
