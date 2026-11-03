@@ -6,6 +6,12 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "5173", "--directory", "todolist"],
       "port": 5173
+    },
+    {
+      "name": "demo-port",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8000", "--directory", "Demo Port"],
+      "port": 8000
     }
   ]
 }

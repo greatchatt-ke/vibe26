@@ -1,0 +1,23 @@
+[
+  {
+    "title": "업무 자동화 스크립트",
+    "description": "엑셀 보고서 취합과 메일 발송을 자동화해 반복 작업 시간을 줄인 Python 스크립트입니다.",
+    "tags": ["Python", "openpyxl", "smtplib"],
+    "github": "https://github.com/",
+    "demo": ""
+  },
+  {
+    "title": "날씨 대시보드",
+    "description": "공공 API에서 받은 날씨 데이터를 Flask로 가공해 HTML5 화면에 보여주는 웹 서비스입니다.",
+    "tags": ["Python", "Flask", "HTML5", "CSS3"],
+    "github": "https://github.com/",
+    "demo": "https://example.com/"
+  },
+  {
+    "title": "반응형 랜딩 페이지",
+    "description": "시맨틱 HTML5와 CSS Grid로 만든, 접근성을 고려한 반응형 랜딩 페이지입니다.",
+    "tags": ["HTML5", "CSS3", "JavaScript"],
+    "github": "https://github.com/",
+    "demo": "https://example.com/"
+  }
+]
