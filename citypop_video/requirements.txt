@@ -1,0 +1,4 @@
+numpy>=1.24
+Pillow>=10.0
+# 시스템에 ffmpeg 설치 필요 (apt install ffmpeg / brew install ffmpeg)
+# 일본어 폰트: IPAGothic (apt install fonts-ipafont-gothic) — 경로는 citypop/visuals.py 상단에서 변경 가능
