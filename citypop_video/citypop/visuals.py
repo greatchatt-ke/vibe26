@@ -194,7 +194,7 @@ class Scene:
         f_jp = ImageFont.truetype(JP_FONT, int(78 * s))
         f_en = ImageFont.truetype(EN_FONT, int(26 * s))
         f_ar = ImageFont.truetype(JP_FONT, int(30 * s))
-        cy = int(H * 0.08)
+        cy = int(H * getattr(self, "title_y", 0.08))
         for txt, font, y, col in ((jp, f_jp, cy, (255, 240, 250)),
                                   (" ".join(en.upper()), f_en, cy + int(95 * s), (140, 240, 255)),
                                   (artist, f_ar, cy + int(140 * s), (255, 200, 120))):
@@ -239,7 +239,7 @@ class Scene:
         return out
 
     # ------------------------------------------------------------------ frame
-    def frame(self, t, energy=0.0, onset=0.0):
+    def frame(self, t, energy=0.0, onset=0.0, bands=None):
         W, H, hz, s = self.W, self.H, self.horizon, self.s
         img = np.empty((H, W, 3), np.float32)
         top = self.sky.copy()
@@ -320,7 +320,11 @@ class Scene:
             for k in range(ln):
                 yk = np.clip(ys + k, 0, H - 1); xk = np.clip(xs - k // 5, 0, W - 1)
                 img[yk, xk] += 38 * (1 - k / ln) + 12
-        # title text (fade in/out) then corner credit
+        img = self.text_overlay(img, t, energy)
+        return self.post(img, t, onset)
+
+    def text_overlay(self, img, t, energy):
+        """Title (fades in/out during the first seconds) then a small corner credit."""
         ta = np.clip((t - 1.0) / 1.2, 0, 1) * np.clip((9.0 - t) / 1.2, 0, 1)
         if ta > 0:
             img += self.text_glow * ta * (0.8 + 0.4 * energy)
@@ -330,7 +334,7 @@ class Scene:
         if ca > 0:
             a = self.credit_a * ca
             img = img * (1 - a) + self.credit_rgb * a
-        return self.post(img, t, onset)
+        return img
 
     def post(self, img, t, onset):
         W, H, s = self.W, self.H, self.s

@@ -15,9 +15,15 @@ ARTISTS = ["サンセット・クラブ", "ネオン・アベニュー", "ミッ
            "シティ・ライツ", "ムーンライト・パレード", "ガラスの午後", "東京ヴィジョン"]
 
 
-def make_meta(seed, theme, music_info, duration):
+DRIVE_TITLES = [("真夜中のドライブ", "Midnight Drive"), ("夜明けのハイウェイ", "Highway at Dawn"),
+                ("渋谷レイン", "Shibuya Rain"), ("銀座ナイトクルーズ", "Ginza Night Cruise"),
+                ("雨の首都高", "Rainy Expressway"), ("赤信号のキス", "Kiss at the Red Light")]
+
+
+def make_meta(seed, theme, music_info, duration, scene="bay"):
     r = np.random.default_rng(seed + 99)
-    jp, en = TITLES[r.integers(len(TITLES))]
+    pool = DRIVE_TITLES if scene == "drive" else TITLES
+    jp, en = pool[r.integers(len(pool))]
     artist = ARTISTS[r.integers(len(ARTISTS))]
     mins, secs = divmod(int(duration), 60)
     yt_title = f"{jp} ({en}) — 80s Tokyo City Pop | シティポップ | 시티팝"
@@ -33,6 +39,9 @@ def make_meta(seed, theme, music_info, duration):
     )
     tags = ["city pop", "シティポップ", "시티팝", "80s japan", "tokyo night", "japanese city pop",
             "retro", "vaporwave", "drive music", "1980s", theme.replace("_", " ")]
-    return dict(seed=seed, theme=theme, title_jp=jp, title_en=en, artist=artist,
+    if scene == "drive":
+        desc = desc.replace("드라이브·공부·작업용 시티팝.", "비 내리는 도쿄 도심을 달리는 한밤의 드라이브 시티팝.")
+        tags += ["night drive", "tokyo drive", "rainy night"]
+    return dict(seed=seed, theme=theme, scene=scene, title_jp=jp, title_en=en, artist=artist,
                 youtube_title=yt_title, description=desc, tags=tags, music=music_info,
                 duration_sec=round(duration, 2))
